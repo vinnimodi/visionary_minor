@@ -9,7 +9,7 @@ router.route("/").get(async (req, res) => {
 
 router.route("/add").post(async (req, res) => {
   const data = req.body;
-  const newUser = new User({ ...data });
+  const newUser = new User({ ...data, cart: [] });
   await newUser.save();
   res.json("User added!");
   // .catch(err => res.status(400).json('Error: ' + err));
