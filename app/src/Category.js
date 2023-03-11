@@ -9,7 +9,9 @@ export default function Category() {
   const { setCat } = useContext(CategoryContext);
   const { name } = useParams();
   setCat(name);
+
   const [products, setProducts] = useState([]);
+  
   useEffect(() => {
     const getProducts = async () => {
       const response = await fetch("http://localhost:5000/products");

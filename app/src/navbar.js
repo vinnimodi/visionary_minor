@@ -157,7 +157,17 @@ function Navbar() {
             {items.map((item) => (
               <Button
                 color="inherit"
-                sx={{ flexGrow: 0.2 }}
+                sx={[
+                  {
+                    flexGrow: 0.2,
+                    backgroundColor: cat === item ? "#FFC107" : "#EEEEEE"
+                  },
+                  {
+                    "&:hover": {
+                      backgroundColor: "#FFC107"
+                    }
+                  }
+                ]}
                 onClick={() => {
                   setCat(item);
                   navigate(`/category/${item}`);
