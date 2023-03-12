@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.10",
     "@prisma/client": "^4.11.0",
+    "axios": "^1.3.4",
     "cors": "^2.8.5",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.1",

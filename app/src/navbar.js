@@ -17,9 +17,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // import SearchBar from "./searchBar.js";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CategoryContext } from "./App";
 
+import SignUp from "./signInDialog";
+import { DataContext } from "./context/DataProvider";
+import Login from "./LoginDialog";
+import { Profile } from "./profile";
 function Navbar() {
   const { setCat, cat } = useContext(CategoryContext);
   const navigate = useNavigate();
@@ -78,6 +82,15 @@ function Navbar() {
   //   },
   // }));
 
+  const { account, setAccount } = useContext(DataContext);
+  const [open, setOpen] = useState(false);
+  const openDialog = () => {
+    setOpen(true);
+  };
+  const [openSignUp, setOpenSignUp] = useState(false);
+  const openDialogSignUp = () => {
+    setOpenSignUp(true);
+  };
   return (
     <div>
       <AppBar position="static">
@@ -138,14 +151,28 @@ function Navbar() {
             </SearchIconWrapper>
           </Search> */}
           <Stack direction="row" spacing={2}>
-            <Button color="inherit">Log in</Button>
-            <Button color="inherit">Sign Up</Button>
+            {account ? (
+              <Profile account={account} setAccount={setAccount} />
+            ) : (
+              <div>
+                <Button color="inherit" onClick={() => openDialog()}>
+                  Log in
+                </Button>
+                <Button color="inherit" onClick={() => openDialogSignUp()}>
+                  Sign Up
+                </Button>
+              </div>
+            )}
+          </Stack>
+          <Stack direction="row" spacing={2}>
             <Button color="inherit">
               <ShoppingCartIcon />
             </Button>
           </Stack>
         </Toolbar>
       </AppBar>
+      <SignUp open={openSignUp} setOpen={setOpenSignUp} />
+      <Login open={open} setOpen={setOpen} />
       {cat !== null ? (
         <Box justify="center" sx={{ flexGrow: 1 }}>
           <Stack
@@ -157,17 +184,10 @@ function Navbar() {
             {items.map((item) => (
               <Button
                 color="inherit"
-                sx={[
-                  {
-                    flexGrow: 0.2,
-                    backgroundColor: cat === item ? "#FFC107" : "#EEEEEE"
-                  },
-                  {
-                    "&:hover": {
-                      backgroundColor: "#FFC107"
-                    }
-                  }
-                ]}
+                sx={{
+                  flexGrow: 0.2
+                  // backgroundColor: cat === item ? "#EEEEEE" : "#FFFFFF"
+                }}
                 onClick={() => {
                   setCat(item);
                   navigate(`/category/${item}`);

@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
-import { CategoryContext } from "./App.js";
+import React from "react";
 import Navbar from "./navbar.js";
 function About() {
-  const { setCat } = useContext(CategoryContext);
-  setCat(null);
   return (
     <div>
       <style jsx>

@@ -2,7 +2,7 @@ import Navbar from "./navbar.js";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { spacing } from "@mui/system";
+// import { spacing } from "@mui/system";
 function Contact() {
   return (
     <div>
@@ -35,7 +35,7 @@ function Contact() {
           style={{
             marginTop: "2rem",
             alignItems: "center",
-            color: "navy",
+            color: "navy"
           }}
         >
           <InstagramIcon />
