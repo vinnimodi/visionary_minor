@@ -207,6 +207,7 @@ const SignUp = ({ open, setOpen }) => {
                   variant="standard"
                   label="Enter Password"
                   name="password"
+                  type="password"
                   onChange={(e) => onInputChange(e)}
                 ></TextField>
 
@@ -245,6 +246,7 @@ const SignUp = ({ open, setOpen }) => {
                   variant="standard"
                   label="Enter Password"
                   name="password"
+                  type="password"
                   onChange={(e) => OnValueChange(e)}
                 ></TextField>
 

@@ -16,10 +16,8 @@ import { styled, alpha } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // import SearchBar from "./searchBar.js";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { useContext, useState } from "react";
 import { CategoryContext } from "./App";
-
 import SignUp from "./signInDialog";
 import { DataContext } from "./context/DataProvider";
 import Login from "./LoginDialog";

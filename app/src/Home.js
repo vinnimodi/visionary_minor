@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { CategoryContext } from "./App";
 import "./App.css";
-
 import Container from "./Container.js";
 import "./index.css";
 import Navbar from "./navbar";

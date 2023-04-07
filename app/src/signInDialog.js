@@ -1,13 +1,13 @@
-import { Dialog } from '@mui/material';
-import { Box } from '@mui/material';
-import { TextField } from '@mui/material';
-import { Typography } from '@mui/material';
-import { Button } from '@mui/material';
-import { styled } from '@mui/material';
-import { authenticateSignUp, authenticateLogin } from './service/api';
-import { useState } from 'react';
-import { useContext } from 'react';
-import { DataContext } from './context/DataProvider';
+import { Dialog } from "@mui/material";
+import { Box } from "@mui/material";
+import { TextField } from "@mui/material";
+import { Typography } from "@mui/material";
+import { Button } from "@mui/material";
+import { styled } from "@mui/material";
+import { authenticateSignUp, authenticateLogin } from "./service/api";
+import { useState } from "react";
+import { useContext } from "react";
+import { DataContext } from "./context/DataProvider";
 
 const Component = styled(Box)`
   height: 65vh;
@@ -81,25 +81,25 @@ const Error = styled(Typography)`
 `;
 const accountInitialValue = {
   login: {
-    view: 'login',
+    view: "login"
   },
   signup: {
-    view: 'signup',
-  },
+    view: "signup"
+  }
 };
 
 const CustomerDetails = {
-  firstName: '',
-  lastName: '',
-  MobileNumber: '',
-  email: '',
-  password: '',
-  username: '',
+  firstName: "",
+  lastName: "",
+  MobileNumber: "",
+  email: "",
+  password: "",
+  username: ""
 };
 
 const loginInitialValue = {
-  username: '',
-  password: '',
+  username: "",
+  password: ""
 };
 
 const SignUp = ({ open, setOpen }) => {
@@ -129,7 +129,7 @@ const SignUp = ({ open, setOpen }) => {
   const onInputChange = (e) => {
     setcustomerSignUp({
       ...customer,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
     //console.log(customer);
   };
@@ -162,18 +162,18 @@ const SignUp = ({ open, setOpen }) => {
         open={open}
         onClose={handleClose}
         PaperProps={{
-          sx: { maxWidth: 'unset', maxHeight: 'unset' },
+          sx: { maxWidth: "unset", maxHeight: "unset" }
         }}
       >
         <Component>
           <Box
             style={{
-              display: 'flex',
-              height: '100%',
+              display: "flex",
+              height: "100%"
             }}
           >
             <Image></Image>
-            {account.view === 'signup' ? (
+            {account.view === "signup" ? (
               <Wrapper>
                 <TextField
                   variant="standard"
@@ -207,6 +207,7 @@ const SignUp = ({ open, setOpen }) => {
                   variant="standard"
                   label="Enter Password"
                   name="password"
+                  type="password"
                   onChange={(e) => onInputChange(e)}
                 ></TextField>
 
@@ -226,7 +227,7 @@ const SignUp = ({ open, setOpen }) => {
                   Privacy Policy.
                 </Text>
                 <RequestOtpButton onClick={() => toggleLogin()}>
-                  {' '}
+                  {" "}
                   Existing User Login
                 </RequestOtpButton>
               </Wrapper>
@@ -245,6 +246,7 @@ const SignUp = ({ open, setOpen }) => {
                   variant="standard"
                   label="Enter Password"
                   name="password"
+                  type="password"
                   onChange={(e) => OnValueChange(e)}
                 ></TextField>
 
@@ -254,8 +256,8 @@ const SignUp = ({ open, setOpen }) => {
                 </Text>
 
                 <LoginButton onClick={() => loginUser()}>Login</LoginButton>
-                <Typography style={{ textAlign: 'center', color: '#000' }}>
-                  {' '}
+                <Typography style={{ textAlign: "center", color: "#000" }}>
+                  {" "}
                   Or
                 </Typography>
                 <RequestOtpButton>Request OTP</RequestOtpButton>

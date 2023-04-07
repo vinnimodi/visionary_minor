@@ -24,7 +24,6 @@ app.use('/', Router);
 app.use('/products', productRouter);
 
 const username = process.env.DB_USERNAME;
-
 const password = process.env.DB_PASSWORD;
 
 Connection(username, password);
