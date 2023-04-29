@@ -16,3 +16,21 @@ export const authenticateLogin = async (data) => {
     return error.response;
   }
 };
+
+export const addToCart = async (prod, account) => {
+  try {
+    // return await axios.post(`${URL}/cart/add`, { pid, account });
+    // rewrite with fetch
+    const response = await fetch(`${URL}/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ product:prod, account:account })
+    });
+    
+    return response.json();
+  } catch (error) {
+    console.log("Error while adding to cart", error);
+  }
+};

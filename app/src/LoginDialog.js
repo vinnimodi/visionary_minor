@@ -138,7 +138,8 @@ const SignUp = ({ open, setOpen }) => {
     let response = await authenticateSignUp(customer);
     if (!response) return;
     handleClose();
-    setAccount(customer.firstName);
+    setAccount(customer);
+    localStorage.setItem("account", JSON.stringify(customer));
   };
 
   const OnValueChange = (e) => {
@@ -150,7 +151,8 @@ const SignUp = ({ open, setOpen }) => {
     console.log(response);
     if (response.status === 200) {
       handleClose();
-      setAccount(response.data.data.firstName);
+      setAccount(response.data.data);
+      localStorage.setItem("account", JSON.stringify(response.data.data));
     } else {
       setError(true);
     }
@@ -260,7 +262,7 @@ const SignUp = ({ open, setOpen }) => {
                   {" "}
                   Or
                 </Typography>
-                <RequestOtpButton>Request OTP</RequestOtpButton>
+                {/* <RequestOtpButton>Request OTP</RequestOtpButton> */}
                 <CreateAccount onClick={() => toggleSignUp()}>
                   New to Visionary ? Create an account
                 </CreateAccount>

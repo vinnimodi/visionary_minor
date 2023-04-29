@@ -23,7 +23,8 @@ export const Profile = ({account,setAccount})=>
     const [open,setOpen] = useState(false);
 
     const logoutUser = () =>{
-        setAccount('');
+        setAccount();
+        localStorage.removeItem('account');
     }
 
     const handleClick = (event)=>{
@@ -39,7 +40,7 @@ export const Profile = ({account,setAccount})=>
         <Box onClick = {handleClick}>
             <Button color='inherit'>
                 <Typography style={ {marginTop : 2 ,cursor :"cursor"}}>
-                    {account}
+                    {account.firstName}
                 </Typography>
             </Button>
         </Box>

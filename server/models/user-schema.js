@@ -1,4 +1,4 @@
-import mongoose, { version } from 'mongoose';
+import mongoose, { version } from "mongoose";
 
 const customerSchema = new mongoose.Schema(
   {
@@ -7,14 +7,14 @@ const customerSchema = new mongoose.Schema(
       required: true,
       trim: true,
       min: 5,
-      max: 20,
+      max: 20
     },
     lastName: {
       type: String,
       required: true,
       trim: true,
       min: 5,
-      max: 20,
+      max: 20
     },
 
     username: {
@@ -23,7 +23,7 @@ const customerSchema = new mongoose.Schema(
       trim: true,
       unique: true,
       index: true,
-      lowercase: true,
+      lowercase: true
     },
 
     email: {
@@ -31,14 +31,14 @@ const customerSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
-      lowercase: true,
+      lowercase: true
     },
 
     password: {
       type: String,
       required: true,
       min: 8,
-      max: 20,
+      max: 20
     },
 
     MobileNumber: {
@@ -46,12 +46,22 @@ const customerSchema = new mongoose.Schema(
       unique: true,
       required: true,
       min: 10,
-      max: 10,
+      max: 10
     },
+
+    Cart: [
+      {
+        id: String,
+        Title: String,
+        Price: Number,
+        Stock: Number,
+        Category: String,
+      }
+    ]
   },
   { versionKey: false }
 );
 
-const Customer = mongoose.model('user', customerSchema);
+const Customer = mongoose.model("user", customerSchema);
 
 export default Customer;

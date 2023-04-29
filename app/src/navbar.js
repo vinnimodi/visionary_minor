@@ -7,12 +7,12 @@ import {
   Button,
   Box,
   TextField,
-  IconButton,
-  InputBase
+  IconButton
+  // InputBase
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { styled, alpha } from "@mui/material/styles";
+// import { styled, alpha } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // import SearchBar from "./searchBar.js";
 import SearchIcon from "@mui/icons-material/Search";
@@ -149,8 +149,13 @@ function Navbar() {
             </SearchIconWrapper>
           </Search> */}
           <Stack direction="row" spacing={2}>
-            {account ? (
-              <Profile account={account} setAccount={setAccount} />
+            {(account?.firstName?.length > 0) ? (
+              <Stack direction="row" spacing={2}>
+                <Profile account={account} setAccount={setAccount} />
+                <Button onClick={() => navigate("/cart")} color="inherit">
+                  <ShoppingCartIcon />
+                </Button>
+              </Stack>
             ) : (
               <div>
                 <Button color="inherit" onClick={() => openDialog()}>
@@ -162,15 +167,12 @@ function Navbar() {
               </div>
             )}
           </Stack>
-          <Stack direction="row" spacing={2}>
-            <Button color="inherit">
-              <ShoppingCartIcon />
-            </Button>
-          </Stack>
         </Toolbar>
       </AppBar>
+      {/* Dialog boxes */}
       <SignUp open={openSignUp} setOpen={setOpenSignUp} />
       <Login open={open} setOpen={setOpen} />
+
       {cat !== null ? (
         <Box justify="center" sx={{ flexGrow: 1 }}>
           <Stack
