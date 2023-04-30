@@ -37,6 +37,7 @@ export default function ProductCard({ item }) {
           onClick={async () => {
             const res = await addToCart(item, account);
             setAccount(res ? res.message : account);
+            localStorage.setItem("account", JSON.stringify(res ? res.message : account));
             console.log(res);
           }}
         >

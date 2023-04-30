@@ -71,7 +71,13 @@ export const addToCart = async (request, response) => {
     // console.log(customer);
     const product = request.body.product;
     // console.log(product);
-    customer.Cart.push(product);
+    // customer.Cart.push(product);
+    if (customer.Cart?.find((item) => item.product?._id === product?._id)) {
+      customer.Cart.find((item) => item.product?._id === product?._id).quantity += 1;
+      // await customer.save();
+    } else
+    customer.Cart.push({ ...product, quantity: 1 });
+    console.log(customer.Cart);
     await customer.save();
 
     response.status(200).json({ message: customer });

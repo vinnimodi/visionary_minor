@@ -56,6 +56,7 @@ const customerSchema = new mongoose.Schema(
         Price: Number,
         Stock: Number,
         Category: String,
+        quantity: Number,
       }
     ]
   },
