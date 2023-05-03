@@ -68,10 +68,7 @@ export const addToCart = async (request, response) => {
   // write the function to add the product id to the cart array
   try {
     const customer = await Customer.findById(request.body.account._id);
-    // console.log(customer);
     const product = request.body.product;
-    // console.log(product);
-    // customer.Cart.push(product);
     if (customer.Cart?.find((item) => item.product?._id === product?._id)) {
       customer.Cart.find((item) => item.product?._id === product?._id).quantity += 1;
       // await customer.save();
@@ -86,3 +83,45 @@ export const addToCart = async (request, response) => {
     response.status(404).json({message:error.message});
   }
 };
+export const changeCart = async (request, response) => {
+  // write the function to add the product id to the cart array
+  try {
+    const customer = await Customer.findById(request.body.account._id);
+    const product = request.body.product;
+    const index = customer.Cart.findIndex((item) => item?.Title === product?.Title)
+    console.log(product.quantity);
+    if (index !== -1) {
+      customer.Cart = customer.Cart.filter((item) =>item!==product);
+      product.quantity += request.body.change;
+      if(product.quantity===0) customer.Cart.splice(index,1);
+      else customer.Cart.splice(index,1,product);
+    }
+    await customer.save();
+
+    response.status(200).json({ message: customer });
+  }
+  catch (error) {
+    console.error(error);
+    response.status(500).json({message:error});
+  }
+};
+// write a function to check if product is already in the cart
+// if yes then return true
+// else return false
+export const checkCart = async (request, response) => {
+try{
+  const customer = await Customer.findById(request.body.account._id);
+    const product = request.body.product;
+    const dbProduct = customer.Cart.find((item) => item?.Title === product?.Title)
+    if (dbProduct) {
+      response.status(200).json({ qty: dbProduct.quantity });
+    }
+    else{
+      response.status(200).json({ qty: 0});
+    }
+
+}
+catch(error){
+  response.status(500).json({message:error.message});
+}
+}

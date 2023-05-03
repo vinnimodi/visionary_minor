@@ -173,7 +173,7 @@ function Navbar() {
       <SignUp open={openSignUp} setOpen={setOpenSignUp} />
       <Login open={open} setOpen={setOpen} />
 
-      {cat !== null ? (
+      {true ? (
         <Box justify="center" sx={{ flexGrow: 1 }}>
           <Stack
             direction="row"
