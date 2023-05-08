@@ -1,6 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import { useNavigate } from "react-router-dom";
+import { addToCart } from "./service/api";
+import { DataContext } from "./context/DataProvider";
+// import { DataContext } from "./context/DataProvider";
 // import { useCart } from "../context/CartContext";
 // import storeItems from "../items.json";
 
@@ -16,6 +19,7 @@ const COMMANDS = {
 };
 
 export default function useAlan() {
+  const { account } = useContext(DataContext);
   const navigate = useNavigate();
   const [alanInstance, setAlanInstance] = useState(null);
   // const {
@@ -45,22 +49,26 @@ export default function useAlan() {
   //   }
   // }, [alanInstance, isCartEmpty, setShowCartItems]);
 
-  // const addItem = useCallback(
-  //   ({ detail: { name, quantity } }) => {
-  //     const item = storeItems.find(
-  //       (i) => i.name.toLowerCase() === name.toLowerCase()
-  //     );
-  //     if (item == null) {
-  //       alanInstance.playText(`I cannot find the ${name} item`);
-  //     } else {
-  //       addToCart(item.id, quantity);
-  //       alanInstance.playText(
-  //         `Add ${quantity} of the ${name} item to your cart`
-  //       );
-  //     }
-  //   },
-  //   [alanInstance, addToCart]
-  // );
+  const addItem = useCallback(
+    async({ detail: { name } }) => {
+      console.log(name);
+      if(name===""|| name==null || name===undefined) return alanInstance.playText(`I cannot find the ${name}`);
+      const response = await fetch("http://localhost:5000/products");
+      const data = await response.json();
+      const item = data.find(
+        (i) => i.Title.toLowerCase().includes(name.toLowerCase())
+      );
+      if (item == null) {
+        alanInstance.playText(`I cannot find the ${name} item`);
+      } else {
+        addToCart(item,account);
+        alanInstance.playText(
+          `Added the ${name} item to your cart`
+        );
+      }
+    },
+    [alanInstance]
+  );
 
   // const removeItem = useCallback(
   //   ({ detail: { name } }) => {
@@ -106,7 +114,7 @@ export default function useAlan() {
   useEffect(() => {
     // window.addEventListener(COMMANDS.OPEN_CART, openCart);
     // window.addEventListener(COMMANDS.CLOSE_CART, closeCart);
-    // window.addEventListener(COMMANDS.ADD_ITEM, addItem);
+    window.addEventListener(COMMANDS.ADD_ITEM, addItem);
     // window.addEventListener(COMMANDS.REMOVE_ITEM, removeItem);
     // window.addEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
     window.addEventListener(COMMANDS.CHOOSE_CAT, choseCat);
@@ -116,53 +124,44 @@ export default function useAlan() {
     return () => {
       // window.removeEventListener(COMMANDS.OPEN_CART, openCart);
       // window.removeEventListener(COMMANDS.CLOSE_CART, closeCart);
-      // window.removeEventListener(COMMANDS.ADD_ITEM, addItem);
+      window.removeEventListener(COMMANDS.ADD_ITEM, addItem);
       // window.removeEventListener(COMMANDS.REMOVE_ITEM, removeItem);
       // window.removeEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
       window.removeEventListener(COMMANDS.CHOOSE_CAT, choseCat);
       window.removeEventListener(COMMANDS.HOME, home);
       window.removeEventListener(COMMANDS.BACK, back);
     };
-  }, [choseCat, back, home]);
+  }, [choseCat, back, home, addItem]);
   // openCart, closeCart, addItem, removeItem, purchaseItems
 
-  // var [greetingWasSaid, setGreetingWasSaid] = useState(false);
-  // var greetingWasSaid = false;
-  // const greet = useCallback(
-  //   async (status) => {
-  //     if (status === "ONLINE" && !greetingWasSaid) {
-  //       await alanInstance.activate();
-  //       alanInstance.playText(
-  //         "Hello, This is Visionary, I am here to help you. You can ask me to do various activities in the website."
-  //       );
-  //       setGreetingWasSaid(true);
-  //     }
-  //   },
-  //   [greetingWasSaid, alanInstance]
-  // );
-
+  const [greetingWasSaid, setGreetingWasSaid] = useState(false);
+  // var greetingWasSaid = false
   useEffect(() => {
     if (alanInstance != null) return;
     setAlanInstance(
       alanBtn({
-        // onButtonState: async function (e) {
-        //   if (e === "ONLINE" && !greetingWasSaid) {
-        //   }
-        // },
         key: process.env.REACT_APP_ALAN_KEY,
         onCommand: ({ command, payload }) => {
           window.dispatchEvent(new CustomEvent(command, { detail: payload }));
         }
       })
     );
+    // console.log(alanInstance);
+    //   if (greetingWasSaid) return;
+    //   alanInstance?.activate();
+      
+    //   console.log("hi "+greetingWasSaid);
+    
   }, [alanInstance]);
-  // useEffect(() => {
-  //   if (alanInstance != null) return;
+  
+  useEffect(() => {
+    if (alanInstance === null) return;
+    console.log(alanInstance);
+    (async()=>{
+      console.log(await alanInstance.updateButtonState("Online"));
 
-  //   async function newFunction() {
-  //     alanInstance?.onButtonState(greet);
-  //   }
-  //   newFunction();
-  // }, [alanInstance, greet]);
+        alanInstance.playText("Hello, I am Alan. How can I help you?");
+      setGreetingWasSaid(true);})()
+  }, [alanInstance, greetingWasSaid]);
   return null;
 }

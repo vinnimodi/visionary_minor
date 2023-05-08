@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 //import mongoose from 'mongoose';
 import Router from './routes/users.js';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 //const express = require('express');
 //const cors = require('cors');
 //const mongoose = require('mongoose');
@@ -17,7 +17,11 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: ["http://localhost:5000", "https://checkout.stripe.com"],
+  })
+);
 //app.use(bodyParser.json({ extended: true }));
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', Router);
@@ -27,6 +31,8 @@ const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 
 Connection(username, password);
+
+
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
 });

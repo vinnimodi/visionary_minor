@@ -1,5 +1,6 @@
 import Customer from "../models/user-schema.js";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const userSignUp = async (request, response) => {
   try {
     // to check if the username already exist
@@ -65,7 +66,6 @@ export const userLogin = async (request, response) => {
 };
 
 export const addToCart = async (request, response) => {
-  // write the function to add the product id to the cart array
   try {
     const customer = await Customer.findById(request.body.account._id);
     const product = request.body.product;
@@ -84,7 +84,6 @@ export const addToCart = async (request, response) => {
   }
 };
 export const changeCart = async (request, response) => {
-  // write the function to add the product id to the cart array
   try {
     const customer = await Customer.findById(request.body.account._id);
     const product = request.body.product;
@@ -105,9 +104,7 @@ export const changeCart = async (request, response) => {
     response.status(500).json({message:error});
   }
 };
-// write a function to check if product is already in the cart
-// if yes then return true
-// else return false
+
 export const checkCart = async (request, response) => {
 try{
   const customer = await Customer.findById(request.body.account._id);
@@ -125,3 +122,30 @@ catch(error){
   response.status(500).json({message:error.message});
 }
 }
+// const stripe = require('stripe')(process.env.STRIPE_KEY)
+import Stripe from 'stripe';
+const stripe = Stripe(process.env.STRIPE_KEY);
+export const checkOut = async (request, response) => {
+  const customer = await Customer.findById(request.body.account._id);
+    const products = request.body.products;
+    const session = await stripe.checkout.sessions.create({
+      customer: customer._id,
+      line_items: products.map((product) => {
+        return {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: product.Title,
+            },
+            unit_amount: product.Price*100,
+          },
+          quantity: product.quantity,
+        };
+      }),
+      mode: 'payment',
+      success_url: 'http://localhost:3000?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: 'http://localhost:3000/cart',
+    });
+  
+    response.json({url: session.url})
+  }

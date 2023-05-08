@@ -22,7 +22,7 @@ export default function ProductCard({ item }) {
   useEffect(()=>{
     const check=async()=>{
       const res=await isInCart(item,account);
-      console.log(res);
+      // console.log(res);
       setQuantity(res?.qty || 0);
     }
     if(account?.firstName) check();

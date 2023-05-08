@@ -4,17 +4,17 @@ import Category from "./Category";
 import About from "./about";
 import Home from "./Home";
 import Contact from "./contact";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useAlan from "./useAlan.js";
-import Dataprovider from "./context/DataProvider";
 import Cart from "./cart";
-//import Dataprovider from './context/DataProvider';
+import { DataContext } from "./context/DataProvider";
 export const CategoryContext = createContext(null);
 
 function App() {
+  // const [account] = useContext(DataContext)
   const [cat, setCat] = useState(null);
   useEffect(() => {
-    console.log(cat);
+    // console.log(cat);
     if (cat !== null) {
       document.title = cat;
     } else {
@@ -23,7 +23,6 @@ function App() {
   }, [cat]);
   useAlan();
   return (
-    <Dataprovider>
       <CategoryContext.Provider value={{ setCat, cat }}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,7 +32,6 @@ function App() {
           <Route path="/category/:name" element={<Category />} />
         </Routes>
       </CategoryContext.Provider>
-    </Dataprovider>
   );
 }
 

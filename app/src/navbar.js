@@ -7,7 +7,8 @@ import {
   Button,
   Box,
   TextField,
-  IconButton
+  IconButton,
+  Badge
   // InputBase
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -153,7 +154,14 @@ function Navbar() {
               <Stack direction="row" spacing={2}>
                 <Profile account={account} setAccount={setAccount} />
                 <Button onClick={() => navigate("/cart")} color="inherit">
-                  <ShoppingCartIcon />
+
+                  <Badge color="secondary" badgeContent={
+                    account?.Cart?.length > 0 ? (
+                      account?.Cart?.reduce((acc, item) =>  acc + item.quantity, 0)
+                    ) : 0
+                  }> 
+                    <ShoppingCartIcon />
+                  </Badge>
                 </Button>
               </Stack>
             ) : (

@@ -7,6 +7,7 @@ import Navbar from "./navbar";
 import { DataContext } from "./context/DataProvider";
 import {
   Box,
+  Button,
   // Button,
   Card,
   // CardActions,
@@ -66,6 +67,25 @@ export default function Cart() {
             </Grid>
           ))}
         </Grid>
+        <Button variant="contained" sx={{ mt: '20px' }} onClick={
+          async()=>{
+            const res=await fetch("http://localhost:5000/checkout",{
+              method:"POST",
+              headers:{
+                "Content-Type":"application/json"
+              },
+              body:JSON.stringify({
+                products:account.Cart,
+                account
+              })
+            })
+            const data=await res.json();
+            console.log(data);
+            window.location.href=data.url;
+            // setAccount(data.message);
+            // localStorage.setItem("account", JSON.stringify(data.message));
+          }
+        }>Checkout</Button>
       </Box>
     </>
   );
