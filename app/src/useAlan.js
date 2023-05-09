@@ -15,7 +15,8 @@ const COMMANDS = {
   PURCHASE_ITEMS: "purchase-items",
   CHOOSE_CAT: "choseCat",
   BACK: "back",
-  HOME: "home"
+  HOME: "home",
+  CHECKOUT: "checkout"
 };
 
 export default function useAlan() {
@@ -28,7 +29,7 @@ export default function useAlan() {
   //   addToCart,
   //   removeFromCart,
   //   cart,
-  //   checkout,
+    // checkout,
   // } = useCart();
 
   // const openCart = useCallback(() => {
@@ -52,7 +53,7 @@ export default function useAlan() {
   const addItem = useCallback(
     async({ detail: { name } }) => {
       console.log(name);
-      if(name===""|| name==null || name===undefined) return alanInstance.playText(`I cannot find the ${name}`);
+      // if(name===""|| name==null || name===undefined) return alanInstance.playText(`I cannot find the ${name}`);
       const response = await fetch("http://localhost:5000/products");
       const data = await response.json();
       const item = data.find(
@@ -106,6 +107,23 @@ export default function useAlan() {
     alanInstance.playText("Going Back");
     navigate(-1);
   }, [alanInstance, navigate]);
+  const checkout = useCallback(async() => {
+    alanInstance.playText("Ok, Checking out");
+    const res=await fetch("http://localhost:5000/checkout",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        products:account.Cart,
+        account
+      })
+    })
+    const data=await res.json();
+    console.log(data);
+    window.location.href=data.url;
+  }, [alanInstance,account]);
+  
   const home = useCallback(() => {
     alanInstance.playText("Going to Home Page");
     navigate("/");
@@ -118,6 +136,7 @@ export default function useAlan() {
     // window.addEventListener(COMMANDS.REMOVE_ITEM, removeItem);
     // window.addEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
     window.addEventListener(COMMANDS.CHOOSE_CAT, choseCat);
+    window.addEventListener(COMMANDS.CHECKOUT, checkout);
     window.addEventListener(COMMANDS.BACK, back);
     window.addEventListener(COMMANDS.HOME, home);
 
@@ -128,10 +147,11 @@ export default function useAlan() {
       // window.removeEventListener(COMMANDS.REMOVE_ITEM, removeItem);
       // window.removeEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
       window.removeEventListener(COMMANDS.CHOOSE_CAT, choseCat);
+      window.removeEventListener(COMMANDS.CHECKOUT, checkout);
       window.removeEventListener(COMMANDS.HOME, home);
       window.removeEventListener(COMMANDS.BACK, back);
     };
-  }, [choseCat, back, home, addItem]);
+  }, [choseCat, back, home, checkout, addItem]);
   // openCart, closeCart, addItem, removeItem, purchaseItems
 
   const [greetingWasSaid, setGreetingWasSaid] = useState(false);

@@ -4,10 +4,11 @@ import Category from "./Category";
 import About from "./about";
 import Home from "./Home";
 import Contact from "./contact";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import useAlan from "./useAlan.js";
 import Cart from "./cart";
-import { DataContext } from "./context/DataProvider";
+import Search from "./Search";
+// import { DataContext } from "./context/DataProvider";
 export const CategoryContext = createContext(null);
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/category/:name" element={<Category />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </CategoryContext.Provider>
   );

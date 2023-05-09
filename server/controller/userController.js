@@ -128,8 +128,10 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 export const checkOut = async (request, response) => {
   const customer = await Customer.findById(request.body.account._id);
     const products = request.body.products;
+    customer.Cart = [];
     const session = await stripe.checkout.sessions.create({
       customer: customer._id,
+      customer_creation:"always",
       line_items: products.map((product) => {
         return {
           price_data: {

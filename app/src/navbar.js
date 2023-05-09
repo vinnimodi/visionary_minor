@@ -80,7 +80,7 @@ function Navbar() {
   //     },
   //   },
   // }));
-
+  const [searchQuery, setSearchQuery] = useState("");
   const { account, setAccount } = useContext(DataContext);
   const [open, setOpen] = useState(false);
   const openDialog = () => {
@@ -130,7 +130,8 @@ function Navbar() {
               className="text"
               color="secondary"
               onInput={(e) => {
-                // setSearchQuery(e.target.value);
+                setSearchQuery(e.target.value);
+                navigate(`/search?q=${searchQuery}`);
               }}
               label="Search"
               variant="filled"
