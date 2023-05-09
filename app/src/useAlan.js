@@ -4,11 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { addToCart } from "./service/api";
 import { DataContext } from "./context/DataProvider";
 // import { DataContext } from "./context/DataProvider";
-// import { useCart } from "../context/CartContext";
-// import storeItems from "../items.json";
 
 const COMMANDS = {
-  OPEN_CART: "open-cart",
   CLOSE_CART: "close-cart",
   ADD_ITEM: "addItem",
   REMOVE_ITEM: "remove-item",
@@ -16,11 +13,13 @@ const COMMANDS = {
   CHOOSE_CAT: "choseCat",
   BACK: "back",
   HOME: "home",
-  CHECKOUT: "checkout"
+  CHECKOUT: "checkout",
+  LOGINOPEN: "loginOpen",
+  ACTION: "action"
 };
 
 export default function useAlan() {
-  const { account } = useContext(DataContext);
+  const { account, setAccount } = useContext(DataContext);
   const navigate = useNavigate();
   const [alanInstance, setAlanInstance] = useState(null);
   // const {
@@ -29,73 +28,38 @@ export default function useAlan() {
   //   addToCart,
   //   removeFromCart,
   //   cart,
-    // checkout,
+  // checkout,
   // } = useCart();
 
-  // const openCart = useCallback(() => {
-  //   if (isCartEmpty) {
-  //     alanInstance.playText("You have no items in your cart");
-  //   } else {
-  //     alanInstance.playText("Opening cart");
-  //     setShowCartItems(true);
-  //   }
-  // }, [alanInstance, isCartEmpty, setShowCartItems]);
-
-  // const closeCart = useCallback(() => {
-  //   if (isCartEmpty) {
-  //     alanInstance.playText("You have no items in your cart");
-  //   } else {
-  //     alanInstance.playText("Closing cart");
-  //     setShowCartItems(false);
-  //   }
-  // }, [alanInstance, isCartEmpty, setShowCartItems]);
 
   const addItem = useCallback(
-    async({ detail: { name } }) => {
+    async ({ detail: { name } }) => {
       console.log(name);
-      // if(name===""|| name==null || name===undefined) return alanInstance.playText(`I cannot find the ${name}`);
-      // const response = await fetch("http://localhost:5000/products");
-      // const data = await response.json();
-      // const item = data.find(
-      //   (i) => i.Title.toLowerCase().includes(name.toLowerCase())
-      // );
-      // if (item == null) {
-      //   alanInstance.playText(`I cannot find the ${name} item`);
-      // } else {
-      //   addToCart(item,account);
-      //   alanInstance.playText(
-      //     `Added the ${name} item to your cart`
-      //   );
-      // }
-
-      alanInstance.playText(`Found the ${name} item to your cart`);
+      if (account === null || account === undefined)
+        return alanInstance.playText(
+          `Please login to add the ${name} item to your cart`
+        );
+      if (name === "" || name == null || name === undefined)
+        return alanInstance.playText(`I cannot find the ${name}`);
+      const response = await fetch("http://localhost:5000/products");
+      const data = await response.json();
+      const item = data.find((i) =>
+        i.Title.toLowerCase().includes(name.toLowerCase())
+      );
+      if (item == null) {
+        alanInstance.playText(`I cannot find the ${name} item`);
+      } else {
+        const res = await addToCart(item, account);
+        setAccount(res ? res.message : account);
+        localStorage.setItem(
+          "account",
+          JSON.stringify(res ? res.message : account)
+        );
+        alanInstance.playText(`Added the ${name} item to your cart`);
+      }
     },
-    [alanInstance,account]
+    [alanInstance, account, setAccount]
   );
-
-  // const removeItem = useCallback(
-  //   ({ detail: { name } }) => {
-  //     const entry = cart.find(
-  //       (e) => e.item.name.toLowerCase() === name.toLowerCase()
-  //     );
-  //     if (entry == null) {
-  //       alanInstance.playText(`I cannot find the ${name} item in your cart`);
-  //     } else {
-  //       removeFromCart(entry.itemId);
-  //       alanInstance.playText(`Removed the ${name} item from your cart`);
-  //     }
-  //   },
-  //   [alanInstance, removeFromCart, cart]
-  // );
-
-  // const purchaseItems = useCallback(() => {
-  //   if (isCartEmpty) {
-  //     alanInstance.playText("Your cart is empty");
-  //   } else {
-  //     alanInstance.playText("Checking out");
-  //     checkout();
-  //   }
-  // }, [alanInstance, isCartEmpty, checkout]);
 
   const choseCat = useCallback(
     ({ detail: { name } }) => {
@@ -110,55 +74,81 @@ export default function useAlan() {
     navigate(-1);
   }, [alanInstance, navigate]);
 
-  const checkout = useCallback(async() => {
+  const checkout = useCallback(async () => {
     alanInstance.playText("Ok, Checking out");
-    const res=await fetch("http://localhost:5000/checkout",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
+    const res = await fetch("http://localhost:5000/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      body:JSON.stringify({
-        products:account.Cart,
+      body: JSON.stringify({
+        products: account.Cart,
         account
       })
-    })
-    const data=await res.json();
+    });
+    const data = await res.json();
     console.log(data);
-    window.location.href=data.url;
-  }, [alanInstance,account]);
-  
+    window.location.href = data.url;
+  }, [alanInstance, account]);
+
   const home = useCallback(() => {
     alanInstance.playText("Going to Home Page");
     navigate("/");
   }, [alanInstance, navigate]);
 
+
+  const actionDo = useCallback(
+    ({ detail: { name } }) => {
+      switch (name) {
+        case "login":
+    alanInstance.playText("Opened Login, Enter Username");
+    document.getElementById("login").click();
+    document.getElementById("username").focus();
+    document.getElementById("password").addEventListener("focus",(e)=>{
+      alanInstance.playText("Enter Password");
+    }
+      )
+          break;
+        case "signup":
+          document.getElementById("signup").click();
+          document.getElementById("username").focus();
+          alanInstance.playText("Opened Signup, Enter Username");
+
+          break;
+        case "cart":
+          document.getElementById("cart").click();
+          break;
+        case "logout":
+          setAccount(null);
+          localStorage.removeItem("account");
+          alanInstance.playText("Logged Out");
+
+          break;
+        default:
+          alanInstance.playText("I cannot find the " + name + " action");
+      }
+    },
+    [alanInstance, setAccount]
+  );
+
   useEffect(() => {
-    // window.addEventListener(COMMANDS.OPEN_CART, openCart);
-    // window.addEventListener(COMMANDS.CLOSE_CART, closeCart);
     window.addEventListener(COMMANDS.ADD_ITEM, addItem);
-    // window.addEventListener(COMMANDS.REMOVE_ITEM, removeItem);
-    // window.addEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
+    window.addEventListener(COMMANDS.ACTION, actionDo);
     window.addEventListener(COMMANDS.CHOOSE_CAT, choseCat);
     window.addEventListener(COMMANDS.CHECKOUT, checkout);
     window.addEventListener(COMMANDS.BACK, back);
     window.addEventListener(COMMANDS.HOME, home);
 
     return () => {
-      // window.removeEventListener(COMMANDS.OPEN_CART, openCart);
-      // window.removeEventListener(COMMANDS.CLOSE_CART, closeCart);
       window.removeEventListener(COMMANDS.ADD_ITEM, addItem);
-      // window.removeEventListener(COMMANDS.REMOVE_ITEM, removeItem);
-      // window.removeEventListener(COMMANDS.PURCHASE_ITEMS, purchaseItems);
+      window.removeEventListener(COMMANDS.ACTION, actionDo);
       window.removeEventListener(COMMANDS.CHOOSE_CAT, choseCat);
       window.removeEventListener(COMMANDS.CHECKOUT, checkout);
       window.removeEventListener(COMMANDS.HOME, home);
       window.removeEventListener(COMMANDS.BACK, back);
     };
-  }, [choseCat, back, home, checkout, addItem]);
-  // openCart, closeCart, addItem, removeItem, purchaseItems
+  }, [choseCat, back, home, checkout, addItem, actionDo]);
 
-  const [greetingWasSaid, setGreetingWasSaid] = useState(false);
-  // var greetingWasSaid = false
   useEffect(() => {
     if (alanInstance != null) return;
     setAlanInstance(
@@ -168,29 +158,20 @@ export default function useAlan() {
           window.dispatchEvent(new CustomEvent(command, { detail: payload }));
         }
       })
-    );
-    // console.log(alanInstance);
-    //   if (greetingWasSaid) return;
-    //   alanInstance?.activate();
-      
-    //   console.log("hi "+greetingWasSaid);
+      );
+    }, [alanInstance]);
     
-  }, [alanInstance]);
-  
-  useEffect(() => {
-    if (alanInstance === null) return;
-    console.log(alanInstance);
-    (async()=>{
-      console.log(await alanInstance.updateButtonState("Online"));
+// const [greetingWasSaid, setGreetingWasSaid] = useState(false);
+//   useEffect(() => {
+//     if (alanInstance === null) return;
+//     console.log(alanInstance);
+//     (async () => {
+//       console.log(await alanInstance.updateButtonState("Online"));
 
-        alanInstance.playText("Hello, I am Alan. How can I help you?");
-      setGreetingWasSaid(true);})()
-  }, [alanInstance, greetingWasSaid]);
-  return null;
+//       alanInstance.playText("Hello, I am Alan. How can I help you?");
+//       setGreetingWasSaid(true);
+//     })();
+//   }, [alanInstance, greetingWasSaid]);
+//   return null;
+// }
 }
-
-
-// onCreateProject(async() => {
-//   const response = await fetch("http://localhost:5000/products");
-//   const data = await response.json();
-// });

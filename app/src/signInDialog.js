@@ -253,7 +253,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <Text>
-                  By continuing, you agree to Flipkart's Terms of Use and
+                  By continuing, you agree to Visionary's Terms of Use and
                   Privacy Policy.
                 </Text>
 

@@ -24,7 +24,7 @@ import { DataContext } from "./context/DataProvider";
 import Login from "./LoginDialog";
 import { Profile } from "./profile";
 function Navbar() {
-  const { setCat, cat } = useContext(CategoryContext);
+  const { setCat } = useContext(CategoryContext);
   const navigate = useNavigate();
   const items = [
     "Fruits & Vegetables",
@@ -154,7 +154,7 @@ function Navbar() {
             {(account?.firstName?.length > 0) ? (
               <Stack direction="row" spacing={2}>
                 <Profile account={account} setAccount={setAccount} />
-                <Button onClick={() => navigate("/cart")} color="inherit">
+                <Button id="cart" onClick={() => navigate("/cart")} color="inherit">
 
                   <Badge color="secondary" badgeContent={
                     account?.Cart?.length > 0 ? (
@@ -167,10 +167,10 @@ function Navbar() {
               </Stack>
             ) : (
               <div>
-                <Button color="inherit" onClick={() => openDialog()}>
+                <Button id="login" color="inherit" onClick={() => openDialog()}>
                   Log in
                 </Button>
-                <Button color="inherit" onClick={() => openDialogSignUp()}>
+                <Button id="signup" color="inherit" onClick={() => openDialogSignUp()}>
                   Sign Up
                 </Button>
               </div>

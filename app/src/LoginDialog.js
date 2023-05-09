@@ -236,15 +236,18 @@ const SignUp = ({ open, setOpen }) => {
             ) : (
               <Wrapper>
                 <TextField
+                  id="username"
                   variant="standard"
                   label="Enter username"
                   name="username"
+                  autoFocus 
                   onChange={(e) => OnValueChange(e)}
                 ></TextField>
                 {error && (
                   <Error>Please enter valid username or password</Error>
                 )}
                 <TextField
+                id="password"
                   variant="standard"
                   label="Enter Password"
                   name="password"
@@ -253,7 +256,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <Text>
-                  By continuing, you agree to Flipkart's Terms of Use and
+                  By continuing, you agree to Visionary's Terms of Use and
                   Privacy Policy.
                 </Text>
 
