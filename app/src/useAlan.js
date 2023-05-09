@@ -54,21 +54,23 @@ export default function useAlan() {
     async({ detail: { name } }) => {
       console.log(name);
       // if(name===""|| name==null || name===undefined) return alanInstance.playText(`I cannot find the ${name}`);
-      const response = await fetch("http://localhost:5000/products");
-      const data = await response.json();
-      const item = data.find(
-        (i) => i.Title.toLowerCase().includes(name.toLowerCase())
-      );
-      if (item == null) {
-        alanInstance.playText(`I cannot find the ${name} item`);
-      } else {
-        addToCart(item,account);
-        alanInstance.playText(
-          `Added the ${name} item to your cart`
-        );
-      }
+      // const response = await fetch("http://localhost:5000/products");
+      // const data = await response.json();
+      // const item = data.find(
+      //   (i) => i.Title.toLowerCase().includes(name.toLowerCase())
+      // );
+      // if (item == null) {
+      //   alanInstance.playText(`I cannot find the ${name} item`);
+      // } else {
+      //   addToCart(item,account);
+      //   alanInstance.playText(
+      //     `Added the ${name} item to your cart`
+      //   );
+      // }
+
+      alanInstance.playText(`Found the ${name} item to your cart`);
     },
-    [alanInstance]
+    [alanInstance,account]
   );
 
   // const removeItem = useCallback(
@@ -107,6 +109,7 @@ export default function useAlan() {
     alanInstance.playText("Going Back");
     navigate(-1);
   }, [alanInstance, navigate]);
+
   const checkout = useCallback(async() => {
     alanInstance.playText("Ok, Checking out");
     const res=await fetch("http://localhost:5000/checkout",{
@@ -185,3 +188,9 @@ export default function useAlan() {
   }, [alanInstance, greetingWasSaid]);
   return null;
 }
+
+
+// onCreateProject(async() => {
+//   const response = await fetch("http://localhost:5000/products");
+//   const data = await response.json();
+// });
