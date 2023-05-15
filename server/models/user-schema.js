@@ -1,52 +1,58 @@
-import mongoose, { version } from "mongoose";
-
+import mongoose, { version } from 'mongoose';
 const customerSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
+      required: [true, 'First name is required'],
       trim: true,
-      min: 5,
-      max: 20
+      minlength: [1, 'First name should have at least 1 character'],
+      maxlength: [20, 'First name should not exceed 20 characters'],
     },
     lastName: {
       type: String,
-      required: true,
       trim: true,
-      min: 5,
-      max: 20
+      minlength: [1, 'Last name should have at least 1 character'],
+      maxlength: [30, 'Last name should not exceed 20 characters'],
     },
 
     username: {
       type: String,
-      required: true,
+      required: [true, 'Username is required'],
       trim: true,
       unique: true,
       index: true,
-      lowercase: true
+      lowercase: true,
     },
 
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
       trim: true,
       unique: true,
-      lowercase: true
+      lowercase: true,
+      validate: {
+        validator: function (value) {
+          // Regular expression for email validation
+          const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+          return emailRegex.test(value);
+        },
+        message: 'Please enter a valid email address',
+      },
     },
 
     password: {
       type: String,
-      required: true,
-      min: 8,
-      max: 20
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password should have at least 8 characters'],
+      maxlength: [20, 'Password should not exceed 20 characters'],
     },
 
     MobileNumber: {
       type: String,
       unique: true,
-      required: true,
-      min: 10,
-      max: 10
+      required: [true, 'Mobile number is required'],
+      minlength: [10, 'Mobile number should have 10 digits'],
+      maxlength: [10, 'Mobile number should have 10 digits'],
     },
 
     Cart: [
@@ -57,12 +63,12 @@ const customerSchema = new mongoose.Schema(
         Stock: Number,
         Category: String,
         quantity: Number,
-      }
-    ]
+      },
+    ],
   },
   { versionKey: false }
 );
 
-const Customer = mongoose.model("user", customerSchema);
+const Customer = mongoose.model('user', customerSchema);
 
 export default Customer;

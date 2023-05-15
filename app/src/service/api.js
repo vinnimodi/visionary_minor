@@ -19,8 +19,6 @@ export const authenticateLogin = async (data) => {
 
 export const addToCart = async (prod, account) => {
   try {
-    // return await axios.post(`${URL}/cart/add`, { pid, account });
-    // rewrite with fetch
     const response = await fetch(`${URL}/add`, {
       method: "POST",
       headers: {
@@ -28,7 +26,7 @@ export const addToCart = async (prod, account) => {
       },
       body: JSON.stringify({ product:prod, account:account })
     });
-    
+    // Returns new account data
     return response.json();
   } catch (error) {
     console.log("Error while adding to cart", error);
@@ -36,8 +34,6 @@ export const addToCart = async (prod, account) => {
 };
 export const handleQuantityChange = async (prod, account, change) => {
   try {
-    // return await axios.post(`${URL}/cart/add`, { pid, account });
-    // rewrite with fetch
     const response = await fetch(`${URL}/change`, {
       method: "POST",
       headers: {
@@ -45,6 +41,7 @@ export const handleQuantityChange = async (prod, account, change) => {
       },
       body: JSON.stringify({ product:prod, account:account , change})
     });
+    // Returns new account data
     return response.json();
   } catch (error) {
     console.log("Error while adding to cart", error);
@@ -52,8 +49,6 @@ export const handleQuantityChange = async (prod, account, change) => {
 };
 export const isInCart = async (prod, account) => {
   try {
-    // return await axios.post(`${URL}/cart/add`, { pid, account });
-    // rewrite with fetch
     const response = await fetch(`${URL}/check`, {
       method: "POST",
       headers: {
@@ -61,7 +56,7 @@ export const isInCart = async (prod, account) => {
       },
       body: JSON.stringify({ product:prod, account:account })
     });
-    
+    // Returns new account data
     return await response.json();
   } catch (error) {
     console.log("Error while adding to cart", error);

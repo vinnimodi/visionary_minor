@@ -10,17 +10,19 @@ import { useContext } from "react";
 import { DataContext } from "./context/DataProvider";
 
 const Component = styled(Box)`
-  height: 65vh;
-  width: 80vh;
+  height: 80vh;
+  width: 85vh;
 `;
 
 const Image = styled(Box)`
   background: #2874f0
     url(https://www.bostonsight.org/wp-content/uploads/2021/06/Person-with-low-vision.jpg)
-    center 10%;
-  height: 100%;
-  width: 20%;
-  padding: 45px 35px;
+    center 100%;
+    bottom 40%
+    height: 100%;
+    width: 20%;
+    background-size: cover;
+    padding: 45px 35px;
   color: #000;
   & > p,
   & > h5 {
@@ -228,6 +230,7 @@ const SignUp = ({ open, setOpen }) => {
                   By continuing, you agree to Visionary's Terms of Use and
                   Privacy Policy.
                 </Text>
+                
                 <RequestOtpButton onClick={() => toggleLogin()}>
                   {" "}
                   Existing User Login
@@ -240,14 +243,14 @@ const SignUp = ({ open, setOpen }) => {
                   variant="standard"
                   label="Enter username"
                   name="username"
-                  autoFocus 
+                  autoFocus
                   onChange={(e) => OnValueChange(e)}
                 ></TextField>
                 {error && (
                   <Error>Please enter valid username or password</Error>
                 )}
                 <TextField
-                id="password"
+                  id="password"
                   variant="standard"
                   label="Enter Password"
                   name="password"
@@ -260,7 +263,7 @@ const SignUp = ({ open, setOpen }) => {
                   Privacy Policy.
                 </Text>
 
-                <LoginButton onClick={() => loginUser()}>Login</LoginButton>
+                <LoginButton type="submit" onClick={() => loginUser()}>Login</LoginButton>
                 <Typography style={{ textAlign: "center", color: "#000" }}>
                   {" "}
                   Or

@@ -101,8 +101,8 @@ export default function useAlan() {
     ({ detail: { name } }) => {
       switch (name) {
         case "login":
-    alanInstance.playText("Opened Login, Enter Username");
-    document.getElementById("login").click();
+          document.getElementById("login").click();
+    alanInstance.playText("Opened Login, Enter Username, Press Tab, Enter Password And press Enter");
     document.getElementById("username").focus();
     document.getElementById("password").addEventListener("focus",(e)=>{
       alanInstance.playText("Enter Password");
@@ -112,7 +112,7 @@ export default function useAlan() {
         case "signup":
           document.getElementById("signup").click();
           document.getElementById("username").focus();
-          alanInstance.playText("Opened Signup, Enter Username");
+          alanInstance.playText("Opened Signup");
 
           break;
         case "cart":

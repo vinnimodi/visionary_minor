@@ -1,26 +1,28 @@
-import { Dialog } from "@mui/material";
-import { Box } from "@mui/material";
-import { TextField } from "@mui/material";
-import { Typography } from "@mui/material";
-import { Button } from "@mui/material";
-import { styled } from "@mui/material";
+import {
+  Dialog,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  styled
+} from "@mui/material";
 import { authenticateSignUp, authenticateLogin } from "./service/api";
 import { useState } from "react";
 import { useContext } from "react";
 import { DataContext } from "./context/DataProvider";
 
 const Component = styled(Box)`
-  height: 65vh;
-  width: 80vh;
+  height: 85vh;
 `;
 
 const Image = styled(Box)`
   background: #2874f0
     url(https://www.bostonsight.org/wp-content/uploads/2021/06/Person-with-low-vision.jpg)
-    center 10%;
+    center 100%;
   height: 100%;
-  width: 20%;
-  padding: 45px 35px;
+  width: 35%;
+  background-size: 1000px 700px;
+  background-repeat: no-repeat;
   color: #000;
   & > p,
   & > h5 {
@@ -36,7 +38,7 @@ const Wrapper = styled(Box)`
   & > div,
   & > button,
   & > p {
-    margin-top: 20px;
+    line-height: 15px;
   }
 `;
 
@@ -46,6 +48,7 @@ const LoginButton = styled(Button)`
   color: #fff;
   height: 48px;
   box-shadow: 0 2px 4px 0 rgb(0 0 0/ 20%);
+  margin-top: 15px;
 `;
 
 const RequestOtpButton = styled(Button)`
@@ -176,8 +179,21 @@ const SignUp = ({ open, setOpen }) => {
           >
             <Image></Image>
             {account.view === "signup" ? (
-              <Wrapper>
+              <Wrapper component="form">
+                <Typography
+                  sx={{
+                    fontSize: 30,
+                    fontWeight: 600,
+                    color: "#000",
+                    textAlign: "center",
+                    marginTop: 0
+                  }}
+                  variant="h5"
+                >
+                  Sign Up
+                </Typography>
                 <TextField
+                  required
                   variant="standard"
                   label="Enter First Name"
                   name="firstName"
@@ -185,6 +201,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <TextField
+                  required
                   variant="standard"
                   label="Enter Last Name"
                   name="lastName"
@@ -192,6 +209,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <TextField
+                  required
                   variant="standard"
                   label="Enter Email"
                   name="email"
@@ -199,6 +217,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <TextField
+                  required
                   variant="standard"
                   label="Enter Mobile Number"
                   name="MobileNumber"
@@ -206,6 +225,7 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <TextField
+                  required
                   variant="standard"
                   label="Enter Password"
                   name="password"
@@ -214,28 +234,31 @@ const SignUp = ({ open, setOpen }) => {
                 ></TextField>
 
                 <TextField
+                  required
                   variant="standard"
                   label="Enter username"
                   name="username"
                   onChange={(e) => onInputChange(e)}
                 ></TextField>
 
-                <LoginButton onClick={() => signUpCustomer()}>
+                <LoginButton type="submit" onClick={() => signUpCustomer()}>
                   Continue
                 </LoginButton>
-
-                <Text>
+                  {"\n"}
+                <Typography>
                   By continuing, you agree to Visionary's Terms of Use and
                   Privacy Policy.
-                </Text>
+                </Typography>
+                {"\n"}
                 <RequestOtpButton onClick={() => toggleLogin()}>
                   {" "}
                   Existing User Login
                 </RequestOtpButton>
               </Wrapper>
             ) : (
-              <Wrapper>
+              <Wrapper component="form">
                 <TextField
+                  required
                   variant="standard"
                   label="Enter username"
                   name="username"
@@ -245,6 +268,7 @@ const SignUp = ({ open, setOpen }) => {
                   <Error>Please enter valid username or password</Error>
                 )}
                 <TextField
+                  required
                   variant="standard"
                   label="Enter Password"
                   name="password"

@@ -25,7 +25,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   min-height: 100%;
-  gap: 3rem;
+  gap: 2rem;
   justify-items: center;
-  padding: 4rem;
+  padding: 2rem;
 }

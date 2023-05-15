@@ -27,9 +27,6 @@ export default function Category() {
   return (
     <>
       <Navbar />
-      {/* <button className="back" onClick={() => router.back()}>
-          Back
-        </button> */}
       <h1 className={"heading"}>{name}</h1>
       <div className="grid">
         {products.map((item) => (

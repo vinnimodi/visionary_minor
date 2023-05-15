@@ -30,7 +30,7 @@
 // - Web Component: https://alan.app/docs/client-api/web/web-component
 
 question('what is this', p =>  {
-    p.play('This is a website for visually impaired app with voice capabilities.');
+    p.play('This is Visionary powered by Alan AI, an extremely advanced voice assistant that can help you order grocery products online.');
 });
 
 question('What (all can you do for me|can you do?)', p => {
