@@ -6,6 +6,7 @@ import Router from './routes/users.js';
 import { productRouter } from './routes/products.js';
 
 import { Connection } from './database/database.js';
+import { userLogin } from './controller/userController.js';
 dotenv.config();
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(
     origin: ["https://visionary-api.onrender.com", "https://checkout.stripe.com"],
   })
 );
+app.post("/login", userLogin);
+
 app.use('/', Router);
 app.use('/products', productRouter);
 
