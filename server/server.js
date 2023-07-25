@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5000", "https://checkout.stripe.com"],
+    origin: ["https://visionary-api.onrender.com/", "https://checkout.stripe.com"],
   })
 );
 app.use('/', Router);
