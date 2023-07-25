@@ -102,7 +102,7 @@ export default function Cart() {
           variant="contained"
           sx={{ mt: "20px" }}
           onClick={async () => {
-            const res = await fetch("https://visionary-api.onrender.com//checkout", {
+            const res = await fetch("https://visionary-api.onrender.com/checkout", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"

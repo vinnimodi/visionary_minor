@@ -13,7 +13,7 @@ export default function Category() {
   
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch("https://visionary-api.onrender.com//products");
+      const response = await fetch("https://visionary-api.onrender.com/products");
       const data = await response.json();
       setProducts(
         data.filter(

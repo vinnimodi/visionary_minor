@@ -41,7 +41,7 @@ export default function useAlan() {
         );
       if (name === "" || name == null || name === undefined)
         return alanInstance.playText(`I cannot find the ${name}`);
-      const response = await fetch("https://visionary-api.onrender.com//products");
+      const response = await fetch("https://visionary-api.onrender.com/products");
       const data = await response.json();
       const item = data.find((i) =>
         i.Title.toLowerCase().includes(name.toLowerCase())
@@ -76,7 +76,7 @@ export default function useAlan() {
 
   const checkout = useCallback(async () => {
     alanInstance.playText("Ok, Checking out");
-    const res = await fetch("https://visionary-api.onrender.com//checkout", {
+    const res = await fetch("https://visionary-api.onrender.com/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
