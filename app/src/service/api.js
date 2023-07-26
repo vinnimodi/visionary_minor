@@ -10,7 +10,7 @@ export const authenticateSignUp = async (data) => {
 
 export const authenticateLogin = async (data) => {
   try {
-    return await axios.post(`${URL}/login`, data);
+    return await axios.post(`${URL}/login?username=${data.username}&password=${data.password}`, data);
   } catch (error) {
     console.log("Error while log in", error);
     return error.response;
