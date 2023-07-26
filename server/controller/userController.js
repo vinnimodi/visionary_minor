@@ -58,8 +58,8 @@ export const userSignUp = async (request, response) => {
 
 export const userLogin = async (request, response) => {
   try {
-    const username = request.body.username;
-    const password = request.body.password;
+    const username = request.username;
+    const password = request.password;
 
     let custo = await Customer.findOne({
       username: username,
@@ -68,7 +68,7 @@ export const userLogin = async (request, response) => {
     if (custo) {
       return response.status(200).json({ data: custo });
     } else {
-      return response.status(401).json(`Invalid Login`);
+      return response.status(401).json({ message: request });
     }
   } catch (error) {
     response.status(500).json(`error `, error.message);

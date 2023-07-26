@@ -16,10 +16,12 @@ app.use(cors());
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://visionary-api.onrender.com", "https://checkout.stripe.com"],
+    origin: "*",
   })
 );
-app.post("/login", userLogin);
+app.post("/login", (req, res) => 
+  userLogin(req.query, res)
+);
 
 app.use('/', Router);
 app.use('/products', productRouter);
